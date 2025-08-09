@@ -28,21 +28,20 @@ python headlines_keyword_csv.py https://www.bbc.com/news technology tech_headlin
 
 > Tip: The URL can be any news site (for example, “Ukrainian Pravda”). If the page layout is different, you may need to update the CSS selectors in the `extract_headlines` function.
 
-## Copilot prompts (examples)
-- *Get all headlines from the main page of BBC News*
-- *Get headlines from BBC News and save them to a text file*
-- *Get headlines from BBC News related to technology and save them to a CSV file with timestamp*
 
-## Evaluation checklist
-- **Correctness:** scripts run without errors and collect headlines.
-- **Completeness:** meets requirements (output/save/filter).
-- **Readability:** clear function names, no duplication.
-- **Efficiency:** did Copilot save you time.
+## Звіт — оцінка результатів та висновки
 
-## Report (what to submit)
-- Code (`.py` or `.ipynb`).
-- Short report using the `report_template.md`:
-  - chosen task; prompts used; comparative evaluation; 5–7 conclusions.
+### Використані промпти
+- Generate the three functions (fetch, extract_headlines, main) with the exact logic shown below. Do NOT add other functions, constants. Keep headers={"User-Agent":"Mozilla/5.0"} and timeout=15. Print numbered headlines with f"{i:02d}. {h}" and default URL "https://www.bbc.com/news". Use BeautifulSoup.
+- Generate the three functions (fetch, extract_headlines, main) with the exact logic shown below. Do NOT add other functions, constants. Keep headers={"User-Agent":"Mozilla/5.0"} and timeout=15. Use BeautifulSoup  default URL "https://www.bbc.com/news". Save all headlines (one per line, UTF-8) to a text file: if a second CLI argument is provided, use it as the output path; otherwise write to "headlines.txt". Also print Saved {len(headlines)} headlines to <path>.
+- Cтворити Python-скрипт, який збирає заголовки новин з певної сторінки сайту та зберігає їх у текстовий файл. додати фільтр по ключовому слову (наприклад, «технології»).
 
----
-*Optional:* you can rename the repository, e.g., `genai-hw11-copilot-news-scraper`.
+### Оцінка результатів
+* **Правильність**: Скрипти працюють: BBC, УП, LB.ua, ZN.ua збирають заголовки стабільно; Censor.NET інколи блокує HTML, але вирішується через RSS або --cloudscraper. Були дрібні неточності, але було просто їх поправити.
+* **Повнота**: Усі вимоги покриті: базовий вивід, збереження у файл/CSV, фільтр за ключовим словом, мультиджерельний режим і кастомний url.
+* **Читабельність**: Структура функцій іменована ясно, є CLI-параметри, мінімальна логіка дублювання; код легко модифікувати.
+* **Ефективність**: Copilot пришвидшив чорнову генерацію (≈50–70% часу економії), але потребував ручних правок: заголовки запитів, retry, anti-bot, feed discovery, CLI. У разі генераціх геть не правильної функції було важко на правти його на істинний шлях.
+
+### Власні висновки (5–7 речень)
+Найкращий результат дав деталізований запит із прикладами вводу/виводу та вимогами до бібліотек і параметрів CLI  Copilot у такому разі генерує ближчий до готового каркас. Copilot був корисним для швидкого створення базової структури (аргументи, парсинг, запис у файл), але мережеві нюанси (headers, retries, RSS-fallback) довелося додати вручну. Головні переваги: швидкий старт, узгоджений стиль, зменшення рутини.Водночас потрібно ретельно перевіряти код, особливо роботу з мережею, кодуванням, edge-кейси та обробку помилок. Практика показала, що RSS-підхід надійніший, ніж сирий HTML-парсинг під антиботом. 
+Планую й надалі використовувати Copilot для шаблонів, генерації допоміжних функцій і тестів, залишаючи критичну логіку та інтеграції під ручний контроль.
